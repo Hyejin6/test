@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+<h1>{{question.question_text}}</h1>
+{% if error_message %} <p> <string>{{error_message}}</string> </p> {% endif %}
+
+<form action = "{% url 'polls:vote' question.id %}" method = "post">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{forloop.counter}}" value="{{choice.id}}">
+        <label for="choice{{forloop.counter}}">{{choice.choice_text}}</label><br>
+    {% endfor %}
+
+    <input type="submit" value="Vote">
+    <br>
+    <tr>
+        <td><a class="btn btn-danger btn-sm" href="{% url 'polls:index' %}" >이전</a> </td>
+    </tr>
+</form>
+</body>
+</html>
